@@ -78,6 +78,15 @@ One option is given, which is `binSize`. This is the size of a `Uint32Array` (a 
 
 Each integer fits 32 booleans, so a bin of 100 `Uint32Array` objects would be capable of storing 3,200 flags.
 
+###Example
+
+Below is an example of setting the binSize to be 1000:
+
+```js
+let binSize = 1e3;
+const array = new BitArray({ binSize });
+```
+
 ## Contribute
 
 If you have a contribution you'd like to make, submit a pull request! Try to match the style of the code written – it should have the appearance of being written by a single author.
