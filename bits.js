@@ -15,16 +15,16 @@ var BitArray = function (opts) {
     this.map = [];
     // the size of a block inside of the map of Uint32Array objects.
     this.binSize = opts.binSize || 100;
-
-    // create a list of flags that I should probably just hard code.
-    this.FLAG = (() => {
-        let arr = [];
-        for (let x = 0; x < 32; x++) {
-            arr.push(Math.pow(2, x));
-        }
-        return arr;
-    })();
 };
+
+// create a list of flags
+var FLAG = (() => {
+    let arr = [];
+    for (let x = 0; x < 32; x++) {
+        arr.push(Math.pow(2, x) | 0);
+    }
+    return arr;
+})();
 
 BitArray.prototype = {
     // get a flag by its ID.
@@ -45,7 +45,7 @@ BitArray.prototype = {
         // the actual Uint32Array the boolean exists within.
         let slot = ~~((id % (b * 32)) / 32);
 
-        return !!(bin[slot] & this.FLAG[id % 32]);
+        return !!(bin[slot] & FLAG[id % 32]);
     },
 
     // set a Boolean value into an ID.
@@ -66,13 +66,13 @@ BitArray.prototype = {
             //     01010001
             //  OR 00100000
             // ==> 01110001
-            bin[slot] |= this.FLAG[id % 32];
+            bin[slot] |= FLAG[id % 32];
         } else {
             // if the value is falsy, use &= ~FLAG to negate the flag.
             //     01010001
             // AND 11101111
             // ==> 01000001
-            bin[slot] &= ~this.FLAG[id % 32];
+            bin[slot] &= ~FLAG[id % 32];
         }
 
         return bin[slot];
@@ -94,7 +94,7 @@ BitArray.prototype = {
         //      01000100
         // FLIP 00000100
         // ===> 01000000
-        bin[slot] ^= this.FLAG[id % 32];
+        bin[slot] ^= FLAG[id % 32];
 
         return bin[slot];
     }
