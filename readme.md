@@ -4,6 +4,54 @@ BitArray.js is a micro-library that creates an array of booleans with less than 
 
 BitArray weighs in at just 0.85kb compressed and 0.35kb gzipped, which makes it extremely lightweight to add to any project.
 
+## Tests
+
+There are three tests for speed vs. memory consumption:
+
+1. Creating an array with 10m elements and adding a boolean to each index.
+
+```js
+const arr = [];
+
+for (let x = 0; x < 1e7; x++) {
+    arr[x] = !!Math.round(Math.random());
+}
+
+return arr;
+```
+
+2. Creating an array with a pre-assigned length of 10m and adding a boolean to each index.
+
+```js
+const arr = new Array(1e7);
+
+for (let x = 0; x < 1e7; x++) {
+    arr[x] = !!Math.round(Math.random());
+}
+
+return arr;
+```
+
+3. Testing the BitArray.
+
+```js
+const arr = new BitArray();
+
+for (let x = 0; x < 1e7; x++) {
+    arr.set(x, !!Math.round(Math.random()));
+}
+
+return arr;
+```
+
+### Results
+
+| Structure      | Time  | Heap Size   | % Memory |
+| -------------- | ----- | ----------  | -------- |
+| Dynamic Array  | 740ms | 335,155,200 | 100%     |
+| Pre-Init Array | 267ms | 81,068,032  | 24.19%   |
+| BitArray       | 479ms | 4,194,304   | 1.25%    |
+
 ## Methods
 
 The BitArray class only has three methods currently: `get`, `set`, and `flip`.
