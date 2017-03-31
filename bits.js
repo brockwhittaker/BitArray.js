@@ -99,3 +99,7 @@ BitArray.prototype = {
         return bin[slot];
     }
 };
+
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = BitArray;
+}
