@@ -1,5 +1,5 @@
 const v8 = require("v8"),
-      BitArray = require("./bits")
+      BitArray = require("./bits");
 
 let compare = {
     standard: () => {
@@ -22,8 +22,18 @@ let compare = {
         return arr;
     },
 
+    Uint8Array: () => {
+        const arr = new Uint8Array(1e7);
+
+        for (let x = 0; x < 1e7; x++) {
+            arr[x] = !!Math.round(Math.random());
+        }
+
+        return arr;
+    },
+
     bitArray: () => {
-        const arr = new BitArray();
+        const arr = new BitArray({ binSize: 1000 });
 
         for (let x = 0; x < 1e7; x++) {
             arr.set(x, !!Math.round(Math.random()));
@@ -33,7 +43,7 @@ let compare = {
     }
 };
 
-const TEST = "bitArray";
+const TEST = "Uint8Array";
 
 const s1 = v8.getHeapStatistics(),
       d = new Date();
