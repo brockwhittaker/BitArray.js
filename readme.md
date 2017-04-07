@@ -78,7 +78,7 @@ One option is given, which is `binSize`. This is the size of a `Uint32Array` (a 
 
 Each integer fits 32 booleans, so a bin of 100 `Uint32Array` objects would be capable of storing 3,200 flags.
 
-###Example
+### Example
 
 Below is an example of setting the binSize to be 1000:
 
