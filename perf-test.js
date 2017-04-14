@@ -43,7 +43,7 @@ let compare = {
     }
 };
 
-const TEST = "Uint8Array";
+const TEST = "bitArray";
 
 const s1 = v8.getHeapStatistics(),
       d = new Date();

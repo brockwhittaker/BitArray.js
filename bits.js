@@ -23,6 +23,7 @@ const BitArray = (() => {
         get: function (id) {
             let b = this.binSize;
             // faster than `Math.floor`.
+            // this gets the zone (bin) of Uint32Arrays (primary array index).
             let z = ~~(id / (b * 32));
             // if a value is inside a block that has already been created, we cannot
             // *really* tell whether a value has been set, but if the block doesn't
@@ -35,6 +36,7 @@ const BitArray = (() => {
             // the bin of Uint32Array objects that we're looking in.
             let bin = this.map[z];
             // the actual Uint32Array the boolean exists within.
+            // secondary array index.
             let slot = ~~((id % (b * 32)) / 32);
 
             // id & 31 is equivalent to id % 32
