@@ -1,13 +1,4 @@
 const BitArray = (() => {
-    // create a list of flags that I should probably just hard code.
-    const FLAGS = (() => {
-        let arr = [];
-        for (let x = 0; x < 32; x++) {
-            arr.push(Math.pow(2, x));
-        }
-        return arr;
-    })();
-
     // The BitArray is a simple bit flag implementation that utilizes standard arrays
     // (for expandability) and Uint32Array types for memory efficiency.
     // Every value is assumed either true or false (inclusive of uninitialized values),
@@ -46,7 +37,15 @@ const BitArray = (() => {
             // the actual Uint32Array the boolean exists within.
             let slot = ~~((id % (b * 32)) / 32);
 
-            return !!(bin[slot] & FLAGS[id % 32]);
+            // id & 31 is equivalent to id % 32
+            // 1 << n is equal to 2 ^ x
+            //
+            // for any mod n where n = 2^i, modulo is simply keeping the lower order
+            // bits 0 through i - 1
+            //     00100100 | 36
+            // AND 00011111 | 31
+            // ==> 00000100 | 4
+            return !!(bin[slot] & (1 << (id & 31)));
         },
 
         // set a Boolean value into an ID.
@@ -67,13 +66,13 @@ const BitArray = (() => {
                 //     01010001
                 //  OR 00100000
                 // ==> 01110001
-                bin[slot] |= FLAGS[id % 32];
+                bin[slot] |= 1 << (id & 31);
             } else {
                 // if the value is falsy, use &= ~FLAG to negate the flag.
                 //     01010001
                 // AND 11101111
                 // ==> 01000001
-                bin[slot] &= ~FLAGS[id % 32];
+                bin[slot] &= ~(1 << (id & 31));
             }
 
             return bin[slot];
@@ -95,7 +94,7 @@ const BitArray = (() => {
             //      01000100
             // FLIP 00000100
             // ===> 01000000
-            bin[slot] ^= FLAGS[id % 32];
+            bin[slot] ^= 1 << (id & 31);
 
             return bin[slot];
         }
